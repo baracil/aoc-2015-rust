@@ -45,7 +45,7 @@ fn parse_input(for_test:bool) -> AOCResult<String> {
 #[cfg(test)]
 #[allow(dead_code)]
 mod tests {
-    use crate::days::day_02::{part1, part2};
+    use crate::days::day_01::main::{part1, part2};
 
     #[test]
     fn day01_part1_test_01()  {

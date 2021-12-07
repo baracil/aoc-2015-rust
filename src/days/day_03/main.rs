@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::result::Result as StdResult;
-use crate::days::day_03::Direction::{East, North, South, West};
+use crate::days::day_03::main::Direction::{East, North, South, West};
 use crate::{Part};
 use crate::problem::{Problem, AOCResult};
 

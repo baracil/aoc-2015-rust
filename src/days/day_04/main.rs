@@ -66,7 +66,7 @@ fn parse_input(for_test:bool) -> AOCResult<String> {
 #[cfg(test)]
 #[allow(dead_code)]
 mod tests {
-    use crate::days::day_04::{compute_md5, is_md5_valid, part1};
+    use crate::days::day_04::main::{compute_md5, is_md5_valid, part1};
 
     #[test]
     fn day04_part1_test_01()  {

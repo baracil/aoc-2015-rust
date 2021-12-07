@@ -2,4 +2,4 @@ pub mod main;
 mod command;
 mod rectangle;
 mod position;
-mod grid;
+pub(crate) mod grid;

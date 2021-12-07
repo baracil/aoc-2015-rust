@@ -124,7 +124,7 @@ fn parse_input() -> AOCResult<Vec<String>> {
 #[cfg(test)]
 #[allow(dead_code)]
 mod tests {
-    use crate::days::day_05::{is_string_nice_part1, is_string_nice_part2};
+    use crate::days::day_05::main::{is_string_nice_part1, is_string_nice_part2};
 
     #[test]
     fn day05_part1_test_01() {

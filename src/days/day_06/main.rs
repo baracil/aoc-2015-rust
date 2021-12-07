@@ -37,7 +37,6 @@ fn parse_input(for_test:bool) -> AOCResult<Vec<Command>> {
 mod tests {
     use crate::days::day_06::command::Command;
     use crate::days::day_06::grid::Grid;
-    use crate::days::day_06::main::parse_input;
     use crate::days::day_06::position::Position;
     use crate::days::day_06::rectangle::Rectangle;
 
@@ -48,11 +47,11 @@ mod tests {
         let command1 = "turn on 0,0 through 999,999".parse::<Command>().unwrap();
         let command2 = "turn off 0,0 through 99,99".parse::<Command>().unwrap();
         let command3 = "toggle 99,99 through 100,100".parse::<Command>().unwrap();
-        grid.apply_command(&command1);
-        grid.apply_command(&command2);
-        grid.apply_command(&command3);
+        grid.apply_command_part1(&command1);
+        grid.apply_command_part1(&command2);
+        grid.apply_command_part1(&command3);
 
-        let nb_on = grid.count_nb_turned_on();
+        let nb_on = grid.count_brightness();
         assert_eq!(nb_on, 999998);
     }
 

@@ -1,6 +1,5 @@
 use std::fmt;
 use std::fmt::Formatter;
-use std::path::Display;
 use std::str::FromStr;
 use lazy_static::lazy_static;
 use regex::Regex;

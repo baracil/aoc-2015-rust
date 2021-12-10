@@ -1,9 +1,7 @@
 use std::collections::{HashMap, HashSet};
 use std::fmt::{Display, Formatter};
 use std::usize;
-use crate::days::day_07::gate::{Gate, Parameter};
-use crate::days::day_07::gate::Gate::Set;
-use crate::days::day_07::node::Node;
+use crate::days::day_07::gate::{Gate};
 
 #[derive(Clone, Debug)]
 pub struct Evaluation {
@@ -26,7 +24,7 @@ impl Evaluation {
         &self.wire
     }
 
-    pub fn value(&self) -> u16 {
+    pub fn _value(&self) -> u16 {
         self.value
     }
 }
@@ -44,7 +42,7 @@ impl Circuit {
     }
 
     pub fn create(gates: &Vec<Gate>) -> Self {
-        let mut gates = gates.clone();
+        let gates = gates.clone();
         let mut gates_by_wire = HashMap::<String, HashSet<usize>>::new();
 
         for (idx, gate) in gates.iter().enumerate() {

@@ -66,7 +66,7 @@ impl Gate {
         param.iter().filter_map(|p| p.wire_name()).collect()
     }
 
-    pub fn value1(&self) -> Option<u16> {
+    pub fn _value1(&self) -> Option<u16> {
         match self {
             And(Literal(v), _, _)
             | Or(Literal(v), _, _)
@@ -77,7 +77,8 @@ impl Gate {
             _ => None
         }
     }
-    pub fn value2(&self) -> Option<u16> {
+
+    pub fn _value2(&self) -> Option<u16> {
         match self {
             And(_, Literal(v), _)
             | Or(_, Literal(v), _)
@@ -147,7 +148,7 @@ impl Gate {
 impl Gate {
 
     pub fn evaluate(&self, registries:&HashMap<String,u16>) -> Option<Evaluation> {
-        match (&self) {
+        match &self {
             Gate::And(p1,p2,w) => Gate::evaluate_biop(|v1,v2| v1&v2, p1,p2,w,registries),
             Gate::Or(p1,p2,w) => Gate::evaluate_biop(|v1,v2| v1|v2, p1,p2,w,registries),
             Gate::LShift(p1,p2,w) => Gate::evaluate_biop(|v1,v2| v1<<v2, p1,p2,w,registries),
@@ -155,7 +156,6 @@ impl Gate {
 
             Gate::Set(p,w) => Gate::evaluate_unop(|v| v, p, w,registries),
             Gate::Not(p,w) => Gate::evaluate_unop(|v| !v, p, w,registries),
-            _ => None
         }
     }
 

@@ -53,7 +53,7 @@ fn parse_input(for_test: bool) -> AOCResult<Vec<Gate>> {
 #[cfg(test)]
 #[allow(dead_code)]
 mod tests {
-    use crate::days::day_07::main::{circuit_part1, parse_input, part1, part2};
+    use crate::days::day_07::main::{circuit_part1, parse_input, part2};
 
     #[test]
     fn day07_part1_test() {
@@ -74,7 +74,7 @@ mod tests {
     #[ignore]
     fn day07_part2_test() {
         let _input = parse_input(true).unwrap();
-        let result = part2().unwrap();
+        let result = part2(&_input).unwrap();
         assert_eq!(result, "")
     }
 }

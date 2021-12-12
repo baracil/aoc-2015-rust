@@ -1,4 +1,4 @@
-use crate::{parse_input, Part};
+use crate::{Part};
 use crate::days::day_11::password::Password;
 use crate::problem::{AOCResult, Problem};
 
@@ -30,7 +30,7 @@ fn parse_input(for_test:bool) -> AOCResult<String> {
 #[cfg(test)]
 #[allow(dead_code)]
 mod tests {
-    use crate::days::day_11::main::{parse_input, part1, part2};
+    use crate::days::day_11::main::{part1, part2};
     use crate::days::day_11::password::Password;
 
     #[test]

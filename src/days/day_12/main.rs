@@ -1,5 +1,5 @@
 use regex::Regex;
-use serde_json::{to_string, Value};
+use serde_json::{Value};
 use crate::Part;
 use crate::problem::{AOCResult, Problem};
 
@@ -61,7 +61,7 @@ fn parse_input(for_test: bool) -> AOCResult<String> {
 #[cfg(test)]
 #[allow(dead_code)]
 mod tests {
-    use crate::days::day_12::main::{parse_input, part1, part2};
+    use crate::days::day_12::main::{part1, part2};
 
     #[test]
     fn day12_part1_test_01() {

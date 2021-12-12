@@ -19,7 +19,7 @@ fn part2() -> AOCResult<String> {
 
 #[allow(dead_code)]
 fn parse_input(for_test:bool) -> AOCResult<String> {
-    Problem::factory(for_test)(3).read_input()
+    Problem::factory(for_test)(XX).read_input()
 }
 
 #[cfg(test)]

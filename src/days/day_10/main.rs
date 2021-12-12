@@ -69,7 +69,7 @@ mod tests {
     #[ignore]
     fn day10_part2_test()  {
         let _input = parse_input(true).unwrap();
-        let result = part2().unwrap();
+        let result = part2(&_input).unwrap();
         assert_eq!(result,"")
     }
 }

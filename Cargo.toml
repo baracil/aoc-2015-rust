@@ -9,6 +9,8 @@ edition = "2021"
 md5 = "0.7.0"
 regex = "1.5.4"
 lazy_static = "1.4.0"
+serde = "1.0.131"
+serde_json = "1.0.72"
 
 [dev-dependencies]
 miette = {features=["fancy"], version="3.2.0"}

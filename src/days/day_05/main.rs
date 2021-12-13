@@ -11,26 +11,26 @@ pub fn day05_launch(part: Part) -> AOCResult<String> {
     }
 }
 
-fn part1(strings: &Vec<String>) -> AOCResult<String> {
+fn part1(strings: &[String]) -> AOCResult<String> {
     Ok(strings.iter().filter(|s| is_string_nice_part1(s)).count().to_string())
 }
 
-fn part2(strings: &Vec<String>) -> AOCResult<String> {
+fn part2(strings: &[String]) -> AOCResult<String> {
     Ok(strings.iter().filter(|s| is_string_nice_part2(s)).count().to_string())
 }
 
 fn is_string_nice_part1(string: &str) -> bool {
     let mut collector = CharCollector::default();
     string.chars().for_each(|c| collector.push_char(c));
-    return collector.is_string_nice();
+    collector.is_string_nice()
 }
 
 fn is_string_nice_part2(strings: &str) -> bool {
-    let chars = strings.chars().collect();
-    return is_string_nice_part2_criteria_two(&chars) && is_string_nice_part2_criteria_one(&chars);
+    let chars:Vec<char> = strings.chars().collect();
+    is_string_nice_part2_criteria_two(&chars) && is_string_nice_part2_criteria_one(&chars)
 }
 
-fn is_string_nice_part2_criteria_one(chars: &Vec<char>) -> bool {
+fn is_string_nice_part2_criteria_one(chars: &[char]) -> bool {
     let mut pair_positions:HashMap<(char,char), usize> = HashMap::new();
 
     for idx in 0..chars.len() - 1 {
@@ -50,11 +50,10 @@ fn is_string_nice_part2_criteria_one(chars: &Vec<char>) -> bool {
         }
 
     };
-    return false;
-
+    false
 }
 
-fn is_string_nice_part2_criteria_two(chars: &Vec<char>) -> bool {
+fn is_string_nice_part2_criteria_two(chars: &[char]) -> bool {
     for idx in 0..chars.len()-2 {
         let c0 = chars.get(idx).unwrap();
         let c2 = chars.get(idx + 2).unwrap();
@@ -62,7 +61,7 @@ fn is_string_nice_part2_criteria_two(chars: &Vec<char>) -> bool {
             return true;
         }
     }
-    return false;
+    false
 }
 
 
@@ -82,7 +81,7 @@ impl Default for CharCollector {
 
 impl CharCollector {
     fn is_string_nice(&self) -> bool {
-        return !self.has_naughty_pair && self.nb_vowels >= 3 && self.has_double;
+        !self.has_naughty_pair && self.nb_vowels >= 3 && self.has_double
     }
 
     fn push_char(&mut self, c: char) {
@@ -101,18 +100,12 @@ impl CharCollector {
 }
 
 fn is_vowel(c: char) -> bool {
-    match c {
-        'a' | 'e' | 'i' | 'o' | 'u' => true,
-        _ => false
-    }
+    matches!(c, 'a' | 'e' | 'i' | 'o' | 'u')
 }
 
 fn is_naughty_pair(c1: char, c2: char) -> bool {
     //    ab, cd, pq, or xy
-    match (c1, c2) {
-        ('a', 'b') | ('c', 'd') | ('p', 'q') | ('x', 'y') => true,
-        _ => false
-    }
+    matches!((c1,c2),  ('a', 'b') | ('c', 'd') | ('p', 'q') | ('x', 'y'))
 }
 
 

@@ -46,7 +46,7 @@ impl Problem {
     #[allow(dead_code)]
     pub fn read_input_as_mapped_lines<U, F: FnMut(&str) -> U>(&self, op:F) -> AOCResult<Vec<U>> {
         Ok(self.read_input()?
-            .split("\n")
+            .split('\n')
             .map(op)
             .collect())
     }
@@ -65,13 +65,13 @@ impl Problem {
 
 
 pub fn to_vec_of_line(content: String) -> Vec<String> {
-    content.split("\n")
+    content.split('\n')
         .map(|s| s.to_string())
         .collect()
 }
 
 pub fn to_vec_of_u32(content: String) -> Vec<u32> {
-    content.split("\n")
+    content.split('\n')
         .map(|s| s.parse::<u32>().unwrap())
         .collect()
 }

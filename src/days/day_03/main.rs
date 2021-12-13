@@ -18,19 +18,14 @@ struct Position {
     y:i32,
 }
 
+#[derive(Default)]
 struct City {
     visited_houses:HashMap<Position,u32>,
 }
 
-impl Default for City {
-    fn default() -> Self {
-        City{visited_houses:HashMap::new()}
-    }
-}
-
 impl City {
     fn visit_house_at(&mut self, position:&Position) {
-        let current_count = self.visited_houses.get(&position).unwrap_or(&0) + 1;
+        let current_count = self.visited_houses.get(position).unwrap_or(&0) + 1;
         self.visited_houses.insert(*position,current_count);
     }
 
@@ -83,14 +78,14 @@ pub fn day03_launch(part: Part) -> AOCResult<String> {
 
 
 
-fn part1(directions:&Vec<Direction>) -> AOCResult<String> {
+fn part1(directions:&[Direction]) -> AOCResult<String> {
     let mut city = City::default();
 
     let position = Position::default();
     city.visit_house_at(&position);
 
     directions.iter().fold(position, |pos, direction| {
-        let pos = pos.displaced(&direction);
+        let pos = pos.displaced(direction);
         city.visit_house_at(&pos);
         pos
     });
@@ -98,7 +93,7 @@ fn part1(directions:&Vec<Direction>) -> AOCResult<String> {
     Ok(city.number_of_visited_houses().to_string())
 }
 
-fn part2(directions:&Vec<Direction>) -> AOCResult<String> {
+fn part2(directions:&[Direction]) -> AOCResult<String> {
     let mut city = City::default();
 
     let mut santa_position = Position::default();

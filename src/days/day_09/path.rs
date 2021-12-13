@@ -14,7 +14,7 @@ impl FromStr for Path {
     type Err = String;
 
     fn from_str(line: &str) -> Result<Self, Self::Err> {
-        let tokens:Vec<&str> = line.split(" ").collect();
+        let tokens:Vec<&str> = line.split(' ').collect();
         Ok(Path::new(tokens[0], tokens[2], parse_input!(tokens[4],u32)))
     }
 }

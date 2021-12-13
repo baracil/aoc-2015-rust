@@ -27,11 +27,7 @@ fn is_md5_valid(md5:&Digest, last_digit_mask:u8) -> bool {
         return false
     }
     // 11110000
-    if md5.0[2]&last_digit_mask != 0u8 {
-        return false
-    }
-
-    return true
+    md5.0[2]&last_digit_mask == 0u8
 }
 
 fn part1(secret_key:&str) -> AOCResult<String> {

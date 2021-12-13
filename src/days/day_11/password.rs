@@ -3,11 +3,11 @@ pub struct Password {
 }
 
 const NB_LETTERS: u8 = 26;
-const A_AS_U8: u8 = 'a' as u8;
+const A_AS_U8: u8 = b'a';
 
-const I_DIGIT: u8 = 'i' as u8 - A_AS_U8;
-const O_DIGIT: u8 = 'o' as u8 - A_AS_U8;
-const L_DIGIT: u8 = 'l' as u8 - A_AS_U8;
+const I_DIGIT: u8 = b'i' - A_AS_U8;
+const O_DIGIT: u8 = b'o' - A_AS_U8;
+const L_DIGIT: u8 = b'l' - A_AS_U8;
 
 impl Password {
     pub fn new(line: &str) -> Self {
@@ -70,7 +70,7 @@ impl Password {
             }
         }
 
-        return req1_ok && nb_pairs>=2;
+        req1_ok && nb_pairs>=2
     }
 
     pub fn is_requirement2_fulfil(&self) -> bool {

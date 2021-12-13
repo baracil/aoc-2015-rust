@@ -11,7 +11,7 @@ pub fn day08_launch(part: Part) -> AOCResult<String> {
     }
 }
 
-fn part1(lines:&Vec<String>) -> AOCResult<String> {
+fn part1(lines:&[String]) -> AOCResult<String> {
     let sum:usize = lines.iter()
         .map(|l| parse_input!(l, StringInfo))
         .map(|l| l.memory_overhead())
@@ -19,7 +19,7 @@ fn part1(lines:&Vec<String>) -> AOCResult<String> {
     Ok(sum.to_string())
 }
 
-fn part2(lines:&Vec<String>) -> AOCResult<String> {
+fn part2(lines:&[String]) -> AOCResult<String> {
     let to_escape_counter = |l:&String| -> usize {2+l.chars().filter(|c| *c=='"' || *c=='\\').count()};
 //    let to_escape_counter = |l:&String| (l.matches("\\").count()+l.matches("\"").count());
     let sum:usize = lines.iter()

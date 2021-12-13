@@ -38,9 +38,9 @@ impl State {
 
 pub fn to_hexa(c: char) -> u8 {
     match c {
-        '0'..='9' => (c as u8 - '0' as u8),
-        'a'..='f' => (c as u8 - 'a' as u8),
-        'A'..='F' => (c as u8 - 'A' as u8),
+        '0'..='9' => (c as u8 - b'0'),
+        'a'..='f' => (c as u8 - b'a'),
+        'A'..='F' => (c as u8 - b'A'),
         _ => panic!("Cannot convert value to hexa {}", c)
     }
 }
@@ -71,7 +71,7 @@ impl FromStr for StringInfo {
         for c in line.chars() {
             let (next_state, c) = state.push(c);
 
-            for c in c {
+            if let Some(c) = c {
                 chars.push(c);
             }
             state = next_state;

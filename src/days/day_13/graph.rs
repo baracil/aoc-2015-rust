@@ -22,17 +22,11 @@ impl Graph {
     }
 }
 
+#[derive(Default)]
 struct GraphAcc {
     names: Vec<String>,
     name_indices: HashMap<String, usize>,
     paths: HashMap<usize, HashMap<usize, i32>>,
-}
-
-impl Default for GraphAcc {
-    fn default() -> Self {
-        GraphAcc { names: Vec::new(), name_indices: HashMap::new(), paths: HashMap::new() }
-    }
-
 }
 
 impl GraphAcc {
@@ -42,7 +36,7 @@ impl GraphAcc {
         let neighbor_idx = self.get_name_index(path.neighbor());
 
         self.paths.entry(name_idx)
-            .or_insert_with(|| HashMap::new())
+            .or_insert_with(HashMap::new)
             .insert(neighbor_idx, path.happiness());
     }
 
@@ -79,14 +73,14 @@ impl GraphAcc {
 }
 
 impl Graph {
-    pub fn new(paths: &Vec<Path>) -> Self {
+    pub fn new(paths: &[Path]) -> Self {
         paths.iter().fold(GraphAcc::default(), |mut g, p| {
             g.push_path(p);
             g
         }).build()
     }
 
-    pub fn new_with_myself(paths: &Vec<Path>) -> Self {
+    pub fn new_with_myself(paths: &[Path]) -> Self {
         paths.iter().fold(GraphAcc::default(), |mut g, p| {
             g.push_path(p);
             g

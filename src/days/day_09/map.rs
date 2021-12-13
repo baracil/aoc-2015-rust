@@ -7,6 +7,7 @@ pub struct Map {
     paths:HashMap<usize,HashMap<usize,u32>>
 }
 
+#[derive(Default)]
 struct MapBuilder {
     id:usize,
     cities:HashMap<String,usize>,
@@ -19,12 +20,6 @@ impl MapBuilder {
     }
 }
 
-
-impl Default for MapBuilder {
-    fn default() -> Self {
-        MapBuilder{ id:0,cities:HashMap::new(),paths:HashMap::new()}
-    }
-}
 
 impl MapBuilder {
     fn add_path(&mut self, path: &Path) {
@@ -48,18 +43,18 @@ impl MapBuilder {
 
         self.paths
             .entry(city1)
-            .or_insert_with(|| HashMap::<usize, u32>::new())
+            .or_insert_with(HashMap::<usize, u32>::new)
             .insert(city2, path.distance());
 
         self.paths
             .entry(city2)
-            .or_insert_with(|| HashMap::<usize, u32>::new())
+            .or_insert_with(HashMap::<usize, u32>::new)
             .insert(city1, path.distance());
     }
 }
 
 impl Map {
-    pub fn parse(lines:&Vec<String>) -> Map {
+    pub fn parse(lines:&[String]) -> Map {
         let mut map = MapBuilder::default();
         lines.iter()
             .map(|l| parse_input!(l,Path))
@@ -78,7 +73,7 @@ impl Map {
     pub fn distance(&self,city1:usize, city2:usize) -> Option<u32> {
         self.paths.get(&city1)
             .and_then(|m| m.get(&city2))
-            .map(|u| *u)
+            .copied()
     }
 
     pub fn connected_cities(&self, city:usize) -> Option<&HashMap<usize,u32>> {

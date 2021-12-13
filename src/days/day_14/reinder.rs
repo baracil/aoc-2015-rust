@@ -31,6 +31,6 @@ impl Reinder {
         let nb_cycles = time.div_euclid(full_duration);
         let remaining = time.rem_euclid(full_duration);
 
-        return self.speed*(nb_cycles*self.fly_duration + self.fly_duration.min(remaining));
+        self.speed*(nb_cycles*self.fly_duration + self.fly_duration.min(remaining))
     }
 }

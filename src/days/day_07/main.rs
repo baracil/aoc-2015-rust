@@ -14,19 +14,19 @@ pub fn day07_launch(part: Part) -> AOCResult<String> {
     }
 }
 
-fn part1(gates: &Vec<Gate>) -> AOCResult<String> {
+fn part1(gates: &[Gate]) -> AOCResult<String> {
     let circuit = circuit_part1(gates)?;
-    circuit.get_value("a").ok_or("No value".to_string()).map(|u| u.to_string())
+    circuit.get_value("a").ok_or_else(|| "No value".to_string()).map(|u| u.to_string())
 }
 
 
-fn circuit_part1(gates: &Vec<Gate>) -> AOCResult<Circuit> {
+fn circuit_part1(gates: &[Gate]) -> AOCResult<Circuit> {
     let mut circuit = Circuit::create(gates);
     circuit.evaluate();
     Ok(circuit)
 }
 
-fn circuit_part2(gates: &Vec<Gate>) -> AOCResult<Circuit> {
+fn circuit_part2(gates: &[Gate]) -> AOCResult<Circuit> {
     let mut circuit = Circuit::create(gates);
     circuit.evaluate();
     let a = circuit.get_value("a").ok_or("Fail to evaluate circuit")?;
@@ -39,9 +39,11 @@ fn circuit_part2(gates: &Vec<Gate>) -> AOCResult<Circuit> {
 }
 
 
-fn part2(gates: &Vec<Gate>) -> AOCResult<String> {
+fn part2(gates: &[Gate]) -> AOCResult<String> {
     let circuit = circuit_part2(gates)?;
-    circuit.get_value("a").ok_or("No value".to_string()).map(|u| u.to_string())
+    circuit.get_value("a")
+        .ok_or_else(|| "No value".to_string())
+        .map(|u| u.to_string())
 }
 
 #[allow(dead_code)]

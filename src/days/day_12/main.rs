@@ -32,9 +32,9 @@ pub fn sum_not_red(value:&Value) -> Option<i64> {
         Value::Number(number) => number.as_i64(),
         Value::String(value) => {
             if value == "red" {
-                return None;
+                None
             } else {
-                return Some(0);
+                Some(0)
             }
         }
         Value::Array(array) => {

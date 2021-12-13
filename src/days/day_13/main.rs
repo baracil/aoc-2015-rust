@@ -13,13 +13,13 @@ pub fn day13_launch(part: Part) -> AOCResult<String> {
     }
 }
 
-fn part1(paths:&Vec<Path>) -> AOCResult<String> {
+fn part1(paths:&[Path]) -> AOCResult<String> {
     let graph = Graph::new(paths);
     let happiest_seating = SeatingFinder::find_happiest_seating(&graph);
     Ok(happiest_seating.to_string())
 }
 
-fn part2(paths:&Vec<Path>) -> AOCResult<String> {
+fn part2(paths:&[Path]) -> AOCResult<String> {
     let graph = Graph::new_with_myself(paths);
     let happiest_seating = SeatingFinder::find_happiest_seating(&graph);
     Ok(happiest_seating.to_string())

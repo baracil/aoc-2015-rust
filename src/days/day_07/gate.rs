@@ -94,7 +94,7 @@ impl FromStr for Parameter {
 
     fn from_str(par: &str) -> Result<Self, Self::Err> {
         Ok(par.parse::<u16>()
-            .map(|v| Literal(v))
+            .map(Literal)
             .unwrap_or_else(|_| Wire(par.to_string())))
     }
 }
@@ -103,7 +103,7 @@ impl FromStr for Gate {
     type Err = String;
 
     fn from_str(line: &str) -> Result<Self, Self::Err> {
-        let tokens: Vec<&str> = line.trim().split(" ").collect();
+        let tokens: Vec<&str> = line.trim().split(' ').collect();
 
         match tokens.len() {
             5 => Self::parse_gate(&tokens),
@@ -115,7 +115,7 @@ impl FromStr for Gate {
 }
 
 impl Gate {
-    fn parse_gate(tokens: &Vec<&str>) -> AOCResult<Gate> {
+    fn parse_gate(tokens: &[&str]) -> AOCResult<Gate> {
         let par1 = tokens[0].parse::<Parameter>()?;
         let par2 = tokens[2].parse::<Parameter>()?;
         let result = tokens[4].to_string();
@@ -131,12 +131,12 @@ impl Gate {
         Ok(gate)
     }
 
-    fn parse_not(tokens: &Vec<&str>) -> AOCResult<Gate> {
+    fn parse_not(tokens: &[&str]) -> AOCResult<Gate> {
         let parameter = tokens[1].parse::<Parameter>()?;
         let wire = tokens[3];
         Ok(Not(parameter, wire.to_string()))
     }
-    fn parse_set(tokens: &Vec<&str>) -> AOCResult<Gate> {
+    fn parse_set(tokens: &[&str]) -> AOCResult<Gate> {
         let parameter = tokens[0].parse::<Parameter>()?;
         let wire = tokens[2];
         Ok(Set(parameter, wire.to_string()))
@@ -168,11 +168,8 @@ impl Gate {
         }
     }
     pub fn evaluate_unop(operator:fn(u16) -> u16, p:&Parameter, wire:&str, registries:&HashMap<String,u16>) -> Option<Evaluation> {
-        let v = p.get_value(registries);
-        for v in v {
-            return Some(Evaluation::with(wire.to_string(), operator(v)));
-        }
-        None
+        p.get_value(registries)
+            .map(|v| Evaluation::with(wire.to_string(), operator(v)))
     }
 
 

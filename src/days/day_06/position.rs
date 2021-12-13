@@ -33,12 +33,12 @@ impl FromStr for Position {
     fn from_str(point_as_string: &str) -> Result<Self, Self::Err> {
         let coordinates:Vec<usize> = point_as_string
             .trim()
-            .split(",")
-            .map(|s| s.parse::<usize>().expect(format!("Cannot parse usize '{}'",s).as_str()))
+            .split(',')
+            .map(|s| s.parse::<usize>().unwrap_or_else(|_| panic!("Cannot parse usize '{}'",s)))
             .collect();
 
-        let x = *coordinates.get(0).ok_or(format!("Cannot parse '{}'",point_as_string))?;
-        let y = *coordinates.get(1).ok_or(format!("Cannot parse '{}'",point_as_string))?;
+        let x = *coordinates.get(0).ok_or_else(|| format!("Cannot parse '{}'",point_as_string))?;
+        let y = *coordinates.get(1).ok_or_else(|| format!("Cannot parse '{}'",point_as_string))?;
 
         Ok(Position { x, y })
     }

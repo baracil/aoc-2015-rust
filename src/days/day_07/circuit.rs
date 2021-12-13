@@ -41,20 +41,20 @@ impl Circuit {
         self.registry.get(wire).cloned()
     }
 
-    pub fn create(gates: &Vec<Gate>) -> Self {
-        let gates = gates.clone();
+    pub fn create(gates: &[Gate]) -> Self {
+        let gates = gates.to_vec();
         let mut gates_by_wire = HashMap::<String, HashSet<usize>>::new();
 
         for (idx, gate) in gates.iter().enumerate() {
             for wire in gate.wires() {
                 gates_by_wire
                     .entry(wire.to_string())
-                    .or_insert_with(|| HashSet::<usize>::new())
+                    .or_insert_with(HashSet::<usize>::new)
                     .insert(idx);
             }
         }
 
-        return Circuit { registry: HashMap::new(), gates, gates_by_wire };
+        Circuit { registry: HashMap::new(), gates, gates_by_wire }
     }
 
     pub fn clear_registry(&mut self) {
@@ -68,7 +68,7 @@ impl Circuit {
     pub fn evaluate(&mut self) {
         let mut values = Vec::<Evaluation>::new();
         for node in &self.gates {
-            for x in node.evaluate(&self.registry) {
+            if let Some(x) = node.evaluate(&self.registry) {
                 values.push(x)
             }
         };
@@ -76,7 +76,7 @@ impl Circuit {
         self.evaluate_rec(&values);
     }
 
-    fn evaluate_rec(&mut self, evaluations: &Vec<Evaluation>) {
+    fn evaluate_rec(&mut self, evaluations: &[Evaluation]) {
 
         let mut new_evaluations = Vec::<Evaluation>::new();
 
@@ -87,10 +87,10 @@ impl Circuit {
 
             self.registry.insert(evaluation.wire.to_string(), evaluation.value);
 
-            for indices in self.gates_by_wire.get(&evaluation.wire) {
+            if let Some(indices) = self.gates_by_wire.get(&evaluation.wire) {
                 for index in indices {
                     let gate = &mut self.gates[*index];
-                    for e in gate.evaluate(&self.registry) {
+                    if let Some(e) = gate.evaluate(&self.registry) {
                         new_evaluations.push(e.clone())
                     }
                 }

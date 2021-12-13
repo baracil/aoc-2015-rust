@@ -27,7 +27,7 @@ impl FromStr for Path {
     // 0      1    2    3   4        5     6   7      8   9  10
     //Alice would gain 89 happiness units by sitting next to Eric.
     fn from_str(line: &str) -> Result<Self, Self::Err> {
-        let token:Vec<&str> = line.split(" ").collect();
+        let token:Vec<&str> = line.split(' ').collect();
         let name = token[0].to_string();
         let action = token[2];
         let level = parse_input!(token[3],i32);

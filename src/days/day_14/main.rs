@@ -11,22 +11,22 @@ pub fn day14_launch(part: Part) -> AOCResult<String> {
     }
 }
 
-fn part1(reinders:&Vec<Reinder>) -> AOCResult<String> {
+fn part1(reinders:&[Reinder]) -> AOCResult<String> {
     compute_max_distance(reinders,2503)
 }
 
-fn part2(reinders:&Vec<Reinder>) -> AOCResult<String> {
+fn part2(reinders:&[Reinder]) -> AOCResult<String> {
     compute_points(reinders,2503)
 }
 
-fn compute_max_distance(reinders:&Vec<Reinder>, time:u32) -> AOCResult<String> {
+fn compute_max_distance(reinders:&[Reinder], time:u32) -> AOCResult<String> {
     Ok(reinders.iter()
         .map(|r| r.distance(time))
         .max()
         .ok_or("No reinders !!!")?.to_string())
 }
 
-fn compute_points(reinders:&Vec<Reinder>, time:u32) -> AOCResult<String> {
+fn compute_points(reinders:&[Reinder], time:u32) -> AOCResult<String> {
 
     let nb_reinders = reinders.len();
 

@@ -12,23 +12,23 @@ impl RouteFinder {
     fn for_min(nb_cities: usize) -> Self {
         let visited = (0..nb_cities).map(|_| false).collect();
 
-        return RouteFinder { route_distance: u32::MAX, nb_to_visit: nb_cities, visited,
+        RouteFinder { route_distance: u32::MAX, nb_to_visit: nb_cities, visited,
             comp:|i1,i2| i1.min(i2),
-        shortcut:|i1,i2| i1>i2};
+        shortcut:|i1,i2| i1>i2}
     }
     fn for_max(nb_cities: usize) -> Self {
         let visited = (0..nb_cities).map(|_| false).collect();
 
-        return RouteFinder { route_distance: u32::MIN, nb_to_visit: nb_cities, visited, comp:|i1,i2| i1.max(i2), shortcut:|_,_| false };
+        RouteFinder { route_distance: u32::MIN, nb_to_visit: nb_cities, visited, comp:|i1,i2| i1.max(i2), shortcut:|_,_| false }
     }
 
 
     pub fn find_shortest_route(map: &Map) -> u32 {
-        RouteFinder::find_route(map,|u| RouteFinder::for_min(u))
+        RouteFinder::find_route(map,RouteFinder::for_min)
     }
 
     pub fn find_longest_route(map: &Map) -> u32 {
-        RouteFinder::find_route(map,|u| RouteFinder::for_max(u))
+        RouteFinder::find_route(map,RouteFinder::for_max)
     }
 
     pub fn find_route(map: &Map, factory:fn(usize) -> RouteFinder) -> u32 {
@@ -65,7 +65,7 @@ impl RouteFinder {
         }
 
         if let Some(connections) = map.connected_cities(next) {
-            for (&city, _) in connections {
+            for &city in connections.keys() {
                 if self.visited[city] {
                     continue;
                 }

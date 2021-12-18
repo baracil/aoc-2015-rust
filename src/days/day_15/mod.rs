@@ -1,3 +1,3 @@
-pub mod main;
 mod ingredients;
+pub mod main;
 mod solver;

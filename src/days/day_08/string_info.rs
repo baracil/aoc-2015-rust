@@ -1,14 +1,12 @@
-use std::str::FromStr;
 use crate::days::day_08::string_info::Char::{Hexa, Literal};
 use crate::days::day_08::string_info::State::Default;
+use std::str::FromStr;
 
-
-#[derive(Copy, Clone,Debug)]
+#[derive(Copy, Clone, Debug)]
 pub enum Char {
     Literal(char),
     Hexa(u8),
 }
-
 
 #[derive(Copy, Clone, Debug)]
 pub enum State {
@@ -31,7 +29,7 @@ impl State {
             (HexaEscape(0, v), _) => (HexaEscape(1, v + to_hexa(c) * 16), None),
             (HexaEscape(1, v), _) => (Default, Some(Hexa(v + to_hexa(c)))),
 
-            (_, _) => panic!("Cannot get next state state={:?} c={}",self, c),
+            (_, _) => panic!("Cannot get next state state={:?} c={}", self, c),
         }
     }
 }
@@ -41,10 +39,9 @@ pub fn to_hexa(c: char) -> u8 {
         '0'..='9' => (c as u8 - b'0'),
         'a'..='f' => (c as u8 - b'a'),
         'A'..='F' => (c as u8 - b'A'),
-        _ => panic!("Cannot convert value to hexa {}", c)
+        _ => panic!("Cannot convert value to hexa {}", c),
     }
 }
-
 
 #[derive(Debug)]
 pub struct StringInfo {
@@ -52,13 +49,11 @@ pub struct StringInfo {
     content: Vec<Char>,
 }
 
-
 impl StringInfo {
     pub fn memory_overhead(&self) -> usize {
-        self.string_length - self.content.len() +2
+        self.string_length - self.content.len() + 2
     }
 }
-
 
 impl FromStr for StringInfo {
     type Err = String;
@@ -75,8 +70,11 @@ impl FromStr for StringInfo {
                 chars.push(c);
             }
             state = next_state;
-        };
+        }
 
-        Ok(StringInfo { string_length, content: chars })
+        Ok(StringInfo {
+            string_length,
+            content: chars,
+        })
     }
 }

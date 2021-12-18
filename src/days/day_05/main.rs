@@ -1,22 +1,30 @@
-use std::collections::HashMap;
+use crate::problem::{AOCResult, Problem};
 use crate::Part;
-use crate::problem::{Problem, AOCResult};
+use std::collections::HashMap;
 
 #[allow(dead_code)]
 pub fn day05_launch(part: Part) -> AOCResult<String> {
     let strings = parse_input()?;
     match part {
         Part::Part1 => part1(&strings),
-        Part::Part2 => part2(&strings)
+        Part::Part2 => part2(&strings),
     }
 }
 
 fn part1(strings: &[String]) -> AOCResult<String> {
-    Ok(strings.iter().filter(|s| is_string_nice_part1(s)).count().to_string())
+    Ok(strings
+        .iter()
+        .filter(|s| is_string_nice_part1(s))
+        .count()
+        .to_string())
 }
 
 fn part2(strings: &[String]) -> AOCResult<String> {
-    Ok(strings.iter().filter(|s| is_string_nice_part2(s)).count().to_string())
+    Ok(strings
+        .iter()
+        .filter(|s| is_string_nice_part2(s))
+        .count()
+        .to_string())
 }
 
 fn is_string_nice_part1(string: &str) -> bool {
@@ -26,35 +34,33 @@ fn is_string_nice_part1(string: &str) -> bool {
 }
 
 fn is_string_nice_part2(strings: &str) -> bool {
-    let chars:Vec<char> = strings.chars().collect();
+    let chars: Vec<char> = strings.chars().collect();
     is_string_nice_part2_criteria_two(&chars) && is_string_nice_part2_criteria_one(&chars)
 }
 
 fn is_string_nice_part2_criteria_one(chars: &[char]) -> bool {
-    let mut pair_positions:HashMap<(char,char), usize> = HashMap::new();
+    let mut pair_positions: HashMap<(char, char), usize> = HashMap::new();
 
     for idx in 0..chars.len() - 1 {
         let c0 = chars.get(idx).unwrap();
         let c1 = chars.get(idx + 1).unwrap();
 
-        let pair = (*c0,*c1);
+        let pair = (*c0, *c1);
 
         let existing = pair_positions.get(&pair);
         if let Some(previous_position) = existing {
-            if *previous_position+2 <= idx {
+            if *previous_position + 2 <= idx {
                 return true;
             }
+        } else {
+            pair_positions.insert(pair, idx);
         }
-        else {
-            pair_positions.insert(pair,idx);
-        }
-
-    };
+    }
     false
 }
 
 fn is_string_nice_part2_criteria_two(chars: &[char]) -> bool {
-    for idx in 0..chars.len()-2 {
+    for idx in 0..chars.len() - 2 {
         let c0 = chars.get(idx).unwrap();
         let c2 = chars.get(idx + 2).unwrap();
         if c0 == c2 {
@@ -63,7 +69,6 @@ fn is_string_nice_part2_criteria_two(chars: &[char]) -> bool {
     }
     false
 }
-
 
 struct CharCollector {
     first: bool,
@@ -75,7 +80,13 @@ struct CharCollector {
 
 impl Default for CharCollector {
     fn default() -> Self {
-        CharCollector { first: true, previous: 'a', nb_vowels: 0, has_double: false, has_naughty_pair: false }
+        CharCollector {
+            first: true,
+            previous: 'a',
+            nb_vowels: 0,
+            has_double: false,
+            has_naughty_pair: false,
+        }
     }
 }
 
@@ -105,9 +116,8 @@ fn is_vowel(c: char) -> bool {
 
 fn is_naughty_pair(c1: char, c2: char) -> bool {
     //    ab, cd, pq, or xy
-    matches!((c1,c2),  ('a', 'b') | ('c', 'd') | ('p', 'q') | ('x', 'y'))
+    matches!((c1, c2), ('a', 'b') | ('c', 'd') | ('p', 'q') | ('x', 'y'))
 }
-
 
 #[allow(dead_code)]
 fn parse_input() -> AOCResult<Vec<String>> {
@@ -148,7 +158,6 @@ mod tests {
         let result = is_string_nice_part1("dvszwmarrgswjxmb");
         assert_eq!(false, result)
     }
-
 
     #[test]
     fn day05_part2_test_01() {

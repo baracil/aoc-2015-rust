@@ -1,4 +1,4 @@
 pub mod main;
-mod path;
 mod map;
+mod path;
 mod route_finder;

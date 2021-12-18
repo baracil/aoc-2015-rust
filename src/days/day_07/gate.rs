@@ -1,11 +1,10 @@
-use std::collections::HashMap;
-use std::fmt::{Display, Formatter};
-use std::str::FromStr;
 use crate::days::day_07::circuit::Evaluation;
 use crate::days::day_07::gate::Gate::{And, LShift, Not, Or, RShift, Set};
 use crate::days::day_07::gate::Parameter::{Literal, Wire};
 use crate::problem::AOCResult;
-
+use std::collections::HashMap;
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 #[derive(Debug, Clone)]
 pub enum Parameter {
@@ -14,20 +13,19 @@ pub enum Parameter {
 }
 
 impl Parameter {
-    fn get_value(&self, registries:&HashMap<String,u16>) -> Option<u16> {
+    fn get_value(&self, registries: &HashMap<String, u16>) -> Option<u16> {
         match &self {
             Wire(w) => registries.get(w).cloned(),
-            Literal(l) => Some(*l)
+            Literal(l) => Some(*l),
         }
     }
-
 }
 
 impl Display for Parameter {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            Wire(w) => write!(f,"{}",w),
-            Literal(v) => write!(f,"{}",v)
+            Wire(w) => write!(f, "{}", w),
+            Literal(v) => write!(f, "{}", v),
         }
     }
 }
@@ -36,7 +34,7 @@ impl Parameter {
     pub fn wire_name(&self) -> Option<&str> {
         match &self {
             Wire(w) => Some(w),
-            _ => None
+            _ => None,
         }
     }
 }
@@ -57,10 +55,14 @@ impl Gate {
             Gate::And(p1, p2, _)
             | Gate::Or(p1, p2, _)
             | Gate::LShift(p1, p2, _)
-            | Gate::RShift(p1, p2, _) =>
-                if p1.wire_name() == p2.wire_name() { vec![p1] } else { vec![p1, p2] },
-            Gate::Set(p, _)
-            | Gate::Not(p, _) => vec![p]
+            | Gate::RShift(p1, p2, _) => {
+                if p1.wire_name() == p2.wire_name() {
+                    vec![p1]
+                } else {
+                    vec![p1, p2]
+                }
+            }
+            Gate::Set(p, _) | Gate::Not(p, _) => vec![p],
         };
 
         param.iter().filter_map(|p| p.wire_name()).collect()
@@ -74,7 +76,7 @@ impl Gate {
             | RShift(Literal(v), _, _)
             | Set(Literal(v), _)
             | Not(Literal(v), _) => Some(*v),
-            _ => None
+            _ => None,
         }
     }
 
@@ -84,7 +86,7 @@ impl Gate {
             | Or(_, Literal(v), _)
             | LShift(_, Literal(v), _)
             | RShift(_, Literal(v), _) => Some(*v),
-            _ => None
+            _ => None,
         }
     }
 }
@@ -93,7 +95,8 @@ impl FromStr for Parameter {
     type Err = String;
 
     fn from_str(par: &str) -> Result<Self, Self::Err> {
-        Ok(par.parse::<u16>()
+        Ok(par
+            .parse::<u16>()
             .map(Literal)
             .unwrap_or_else(|_| Wire(par.to_string())))
     }
@@ -109,7 +112,7 @@ impl FromStr for Gate {
             5 => Self::parse_gate(&tokens),
             4 => Self::parse_not(&tokens),
             3 => Self::parse_set(&tokens),
-            n => Err(format!("Cannot parse command '{}' nb-tokens={}", line, n))
+            n => Err(format!("Cannot parse command '{}' nb-tokens={}", line, n)),
         }
     }
 }
@@ -125,7 +128,7 @@ impl Gate {
             "AND" => And(par1, par2, result),
             "LSHIFT" => LShift(par1, par2, result),
             "RSHIFT" => RShift(par1, par2, result),
-            _ => return Err(format!("Cannot parse gate '{}'", tokens[1]))
+            _ => return Err(format!("Cannot parse gate '{}'", tokens[1])),
         };
 
         Ok(gate)
@@ -143,34 +146,44 @@ impl Gate {
     }
 }
 
-
-
 impl Gate {
-
-    pub fn evaluate(&self, registries:&HashMap<String,u16>) -> Option<Evaluation> {
+    pub fn evaluate(&self, registries: &HashMap<String, u16>) -> Option<Evaluation> {
         match &self {
-            Gate::And(p1,p2,w) => Gate::evaluate_biop(|v1,v2| v1&v2, p1,p2,w,registries),
-            Gate::Or(p1,p2,w) => Gate::evaluate_biop(|v1,v2| v1|v2, p1,p2,w,registries),
-            Gate::LShift(p1,p2,w) => Gate::evaluate_biop(|v1,v2| v1<<v2, p1,p2,w,registries),
-            Gate::RShift(p1,p2,w) => Gate::evaluate_biop(|v1,v2| v1>>v2, p1,p2,w,registries),
+            Gate::And(p1, p2, w) => Gate::evaluate_biop(|v1, v2| v1 & v2, p1, p2, w, registries),
+            Gate::Or(p1, p2, w) => Gate::evaluate_biop(|v1, v2| v1 | v2, p1, p2, w, registries),
+            Gate::LShift(p1, p2, w) => {
+                Gate::evaluate_biop(|v1, v2| v1 << v2, p1, p2, w, registries)
+            }
+            Gate::RShift(p1, p2, w) => {
+                Gate::evaluate_biop(|v1, v2| v1 >> v2, p1, p2, w, registries)
+            }
 
-            Gate::Set(p,w) => Gate::evaluate_unop(|v| v, p, w,registries),
-            Gate::Not(p,w) => Gate::evaluate_unop(|v| !v, p, w,registries),
+            Gate::Set(p, w) => Gate::evaluate_unop(|v| v, p, w, registries),
+            Gate::Not(p, w) => Gate::evaluate_unop(|v| !v, p, w, registries),
         }
     }
 
-    pub fn evaluate_biop(operator:fn(u16, u16) -> u16, p1:&Parameter, p2:&Parameter, wire:&str, registries:&HashMap<String,u16>) -> Option<Evaluation> {
+    pub fn evaluate_biop(
+        operator: fn(u16, u16) -> u16,
+        p1: &Parameter,
+        p2: &Parameter,
+        wire: &str,
+        registries: &HashMap<String, u16>,
+    ) -> Option<Evaluation> {
         let v1 = p1.get_value(registries);
         let v2 = p2.get_value(registries);
-        match (v1,v2) {
-            (Some(v1),Some(v2)) => Some(Evaluation::with(wire.to_string(),operator(v1, v2))),
-            _ => None
+        match (v1, v2) {
+            (Some(v1), Some(v2)) => Some(Evaluation::with(wire.to_string(), operator(v1, v2))),
+            _ => None,
         }
     }
-    pub fn evaluate_unop(operator:fn(u16) -> u16, p:&Parameter, wire:&str, registries:&HashMap<String,u16>) -> Option<Evaluation> {
+    pub fn evaluate_unop(
+        operator: fn(u16) -> u16,
+        p: &Parameter,
+        wire: &str,
+        registries: &HashMap<String, u16>,
+    ) -> Option<Evaluation> {
         p.get_value(registries)
             .map(|v| Evaluation::with(wire.to_string(), operator(v)))
     }
-
-
 }

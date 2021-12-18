@@ -1,7 +1,7 @@
+use crate::days::day_07::gate::Gate;
 use std::collections::{HashMap, HashSet};
 use std::fmt::{Display, Formatter};
 use std::usize;
-use crate::days::day_07::gate::{Gate};
 
 #[derive(Clone, Debug)]
 pub struct Evaluation {
@@ -35,7 +35,6 @@ pub struct Circuit {
     gates_by_wire: HashMap<String, HashSet<usize>>,
 }
 
-
 impl Circuit {
     pub fn get_value(&self, wire: &str) -> Option<u16> {
         self.registry.get(wire).cloned()
@@ -54,15 +53,19 @@ impl Circuit {
             }
         }
 
-        Circuit { registry: HashMap::new(), gates, gates_by_wire }
+        Circuit {
+            registry: HashMap::new(),
+            gates,
+            gates_by_wire,
+        }
     }
 
     pub fn clear_registry(&mut self) {
         self.registry.clear();
     }
 
-    pub fn set_value(&mut self, wire:&str, value:u16) {
-        self.registry.insert(wire.to_string(),value);
+    pub fn set_value(&mut self, wire: &str, value: u16) {
+        self.registry.insert(wire.to_string(), value);
     }
 
     pub fn evaluate(&mut self) {
@@ -71,21 +74,21 @@ impl Circuit {
             if let Some(x) = node.evaluate(&self.registry) {
                 values.push(x)
             }
-        };
+        }
 
         self.evaluate_rec(&values);
     }
 
     fn evaluate_rec(&mut self, evaluations: &[Evaluation]) {
-
         let mut new_evaluations = Vec::<Evaluation>::new();
 
         for evaluation in evaluations {
             if self.registry.contains_key(evaluation.wire()) {
-                continue
+                continue;
             }
 
-            self.registry.insert(evaluation.wire.to_string(), evaluation.value);
+            self.registry
+                .insert(evaluation.wire.to_string(), evaluation.value);
 
             if let Some(indices) = self.gates_by_wire.get(&evaluation.wire) {
                 for index in indices {
@@ -95,7 +98,7 @@ impl Circuit {
                     }
                 }
             }
-        };
+        }
 
         if !new_evaluations.is_empty() {
             self.evaluate_rec(&new_evaluations)

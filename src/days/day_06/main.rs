@@ -1,17 +1,17 @@
 use crate::days::day_06::command::Command;
 use crate::days::day_06::grid::Grid;
-use crate::Part;
 use crate::problem::{AOCResult, Problem};
+use crate::Part;
 
 #[allow(dead_code)]
 pub fn day06_launch(part: Part) -> AOCResult<String> {
     let school = parse_input(false)?;
     match part {
         Part::Part1 => part1(&school),
-        Part::Part2 => part2(&school)
+        Part::Part2 => part2(&school),
     }
 }
-fn part1(commands:&[Command]) -> AOCResult<String> {
+fn part1(commands: &[Command]) -> AOCResult<String> {
     let mut grid = Grid::default();
 
     commands.iter().for_each(|c| grid.apply_command_part1(c));
@@ -19,7 +19,7 @@ fn part1(commands:&[Command]) -> AOCResult<String> {
     Ok(grid.count_brightness().to_string())
 }
 
-fn part2(commands:&[Command]) -> AOCResult<String> {
+fn part2(commands: &[Command]) -> AOCResult<String> {
     let mut grid = Grid::default();
 
     commands.iter().for_each(|c| grid.apply_command_part2(c));
@@ -28,8 +28,11 @@ fn part2(commands:&[Command]) -> AOCResult<String> {
 }
 
 #[allow(dead_code)]
-fn parse_input(for_test:bool) -> AOCResult<Vec<Command>> {
-    Problem::factory(for_test)(6).read_input_as_mapped_lines(|s| s.parse::<Command>().unwrap_or_else(|_| panic!("Cannot parse '{}'",s)))
+fn parse_input(for_test: bool) -> AOCResult<Vec<Command>> {
+    Problem::factory(for_test)(6).read_input_as_mapped_lines(|s| {
+        s.parse::<Command>()
+            .unwrap_or_else(|_| panic!("Cannot parse '{}'", s))
+    })
 }
 
 #[cfg(test)]
@@ -42,7 +45,7 @@ mod tests {
 
     #[test]
     #[ignore]
-    fn day06_part1_test()  {
+    fn day06_part1_test() {
         let mut grid = Grid::default();
         let command1 = "turn on 0,0 through 999,999".parse::<Command>().unwrap();
         let command2 = "turn off 0,0 through 99,99".parse::<Command>().unwrap();
@@ -56,15 +59,13 @@ mod tests {
     }
 
     #[test]
-    fn day06_test_rect_indices()  {
-        let rect = Rectangle::with_corners(Position::at(1,1),Position::at(2,2));
+    fn day06_test_rect_indices() {
+        let rect = Rectangle::with_corners(Position::at(1, 1), Position::at(2, 2));
 
-
-        rect.indices(10).for_each(|i| println!("{}",i))
+        rect.indices(10).for_each(|i| println!("{}", i))
     }
 
     #[test]
     #[ignore]
-    fn day06_part2_test()  {
-    }
+    fn day06_part2_test() {}
 }

@@ -19,15 +19,15 @@ impl Password {
         loop {
             self.generate_next();
             if self.is_requirement2_fulfil() && self.are_requirement1_and_3_fulfil() {
-                let result = self.password.iter().map(|u| (u + A_AS_U8) as char)
+                let result = self
+                    .password
+                    .iter()
+                    .map(|u| (u + A_AS_U8) as char)
                     .collect::<String>();
                 return result;
             }
         }
     }
-
-
-
 
     fn generate_next(&mut self) {
         let mut idx = self.password.len() - 1;
@@ -43,24 +43,23 @@ impl Password {
             idx -= 1;
         }
     }
-//ghjaabcc
+    //ghjaabcc
     pub fn are_requirement1_and_3_fulfil(&self) -> bool {
         let mut req1_ok = false;
         let mut previous_pair_index = 0;
         let mut nb_pairs = 0;
         let mut match_in_a_row = 0;
 
-        for (idx,pair) in self.password.windows(2).enumerate() {
+        for (idx, pair) in self.password.windows(2).enumerate() {
             let prev = pair[0];
             let this = pair[1];
 
-
-            if prev == this && previous_pair_index+1 != idx {
-                nb_pairs+=1;
+            if prev == this && previous_pair_index + 1 != idx {
+                nb_pairs += 1;
                 previous_pair_index = idx;
             }
 
-            if prev+1 == this  {
+            if prev + 1 == this {
                 match_in_a_row += 1;
                 if match_in_a_row == 2 {
                     req1_ok = true;
@@ -70,11 +69,13 @@ impl Password {
             }
         }
 
-        req1_ok && nb_pairs>=2
+        req1_ok && nb_pairs >= 2
     }
 
     pub fn is_requirement2_fulfil(&self) -> bool {
-        !self.password.iter().any(|c| *c == I_DIGIT || *c == O_DIGIT || *c == L_DIGIT)
+        !self
+            .password
+            .iter()
+            .any(|c| *c == I_DIGIT || *c == O_DIGIT || *c == L_DIGIT)
     }
-
 }

@@ -10,7 +10,11 @@ impl SeatingFinder {
     pub fn find_happiest_seating(graph: &Graph) -> i32 {
         let visited = (0..graph.nb_guests()).map(|_| false).collect();
 
-        let mut finder = SeatingFinder { happiness: 0, nb_to_seat: graph.nb_guests(), visited };
+        let mut finder = SeatingFinder {
+            happiness: 0,
+            nb_to_seat: graph.nb_guests(),
+            visited,
+        };
 
         for guest in 0..graph.nb_guests() {
             finder.visited[guest] = true;
@@ -24,12 +28,19 @@ impl SeatingFinder {
 
             finder.visited[guest] = false;
             finder.nb_to_seat += 1;
-        };
+        }
 
         finder.happiness
     }
 
-    fn find_happiest(&mut self, first: usize, current: usize, next: usize, current_happiness: i32, graph: &Graph) {
+    fn find_happiest(
+        &mut self,
+        first: usize,
+        current: usize,
+        next: usize,
+        current_happiness: i32,
+        graph: &Graph,
+    ) {
         let new_happiness = current_happiness + graph.get_happiness(current, next);
 
         self.visited[next] = true;

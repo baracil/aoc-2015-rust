@@ -1,9 +1,8 @@
+use crate::days::day_03::main::Direction::{East, North, South, West};
+use crate::problem::{AOCResult, Problem};
+use crate::Part;
 use std::collections::HashMap;
 use std::result::Result as StdResult;
-use crate::days::day_03::main::Direction::{East, North, South, West};
-use crate::{Part};
-use crate::problem::{Problem, AOCResult};
-
 
 enum Direction {
     North,
@@ -12,21 +11,21 @@ enum Direction {
     West,
 }
 
-#[derive(Eq, PartialEq,Hash, Default, Copy, Clone)]
+#[derive(Eq, PartialEq, Hash, Default, Copy, Clone)]
 struct Position {
-    x:i32,
-    y:i32,
+    x: i32,
+    y: i32,
 }
 
 #[derive(Default)]
 struct City {
-    visited_houses:HashMap<Position,u32>,
+    visited_houses: HashMap<Position, u32>,
 }
 
 impl City {
-    fn visit_house_at(&mut self, position:&Position) {
+    fn visit_house_at(&mut self, position: &Position) {
         let current_count = self.visited_houses.get(position).unwrap_or(&0) + 1;
-        self.visited_houses.insert(*position,current_count);
+        self.visited_houses.insert(*position, current_count);
     }
 
     fn number_of_visited_houses(&self) -> usize {
@@ -34,23 +33,23 @@ impl City {
     }
 }
 
-
 impl Position {
-
-    fn translated(self,dx:i32,dy:i32) -> Self {
-        Position{x:self.x+dx, y:self.y+dy}
+    fn translated(self, dx: i32, dy: i32) -> Self {
+        Position {
+            x: self.x + dx,
+            y: self.y + dy,
+        }
     }
 
-    fn displaced(self, direction:&Direction) -> Self {
-        match direction  {
-            North => self.translated(0,1),
-            South => self.translated(0,-1),
-            East => self.translated(1,0),
-            West => self.translated(-1,0)
+    fn displaced(self, direction: &Direction) -> Self {
+        match direction {
+            North => self.translated(0, 1),
+            South => self.translated(0, -1),
+            East => self.translated(1, 0),
+            West => self.translated(-1, 0),
         }
     }
 }
-
 
 impl TryFrom<char> for Direction {
     type Error = String;
@@ -61,24 +60,21 @@ impl TryFrom<char> for Direction {
             '>' => Ok(East),
             'v' => Ok(South),
             '<' => Ok(West),
-            _ => Err(format!("Cannot convert '{}' to Direction",value))
+            _ => Err(format!("Cannot convert '{}' to Direction", value)),
         }
     }
 }
-
 
 #[allow(dead_code)]
 pub fn day03_launch(part: Part) -> AOCResult<String> {
     let directions = parse_input(false)?;
     match part {
         Part::Part1 => part1(&directions),
-        Part::Part2 => part2(&directions)
+        Part::Part2 => part2(&directions),
     }
 }
 
-
-
-fn part1(directions:&[Direction]) -> AOCResult<String> {
+fn part1(directions: &[Direction]) -> AOCResult<String> {
     let mut city = City::default();
 
     let position = Position::default();
@@ -93,12 +89,11 @@ fn part1(directions:&[Direction]) -> AOCResult<String> {
     Ok(city.number_of_visited_houses().to_string())
 }
 
-fn part2(directions:&[Direction]) -> AOCResult<String> {
+fn part2(directions: &[Direction]) -> AOCResult<String> {
     let mut city = City::default();
 
     let mut santa_position = Position::default();
     let mut robo_santa_position = Position::default();
-
 
     city.visit_house_at(&santa_position);
     city.visit_house_at(&robo_santa_position);
@@ -113,15 +108,16 @@ fn part2(directions:&[Direction]) -> AOCResult<String> {
             city.visit_house_at(&robo_santa_position);
         }
         flag = !flag;
-    };
+    }
 
     Ok(city.number_of_visited_houses().to_string())
 }
 
-
-
-
 #[allow(dead_code)]
-fn parse_input(for_test:bool) -> AOCResult<Vec<Direction>> {
-    Ok(Problem::factory(for_test)(3).read_input()?.chars().map(|c| Direction::try_from(c).unwrap()).collect())
+fn parse_input(for_test: bool) -> AOCResult<Vec<Direction>> {
+    Ok(Problem::factory(for_test)(3)
+        .read_input()?
+        .chars()
+        .map(|c| Direction::try_from(c).unwrap())
+        .collect())
 }

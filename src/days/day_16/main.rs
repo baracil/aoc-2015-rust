@@ -55,19 +55,4 @@ fn parse_input(for_test: bool) -> AOCResult<Vec<Aunt>> {
 mod tests {
     use crate::days::day_16::main::{parse_input, part1, part2};
 
-    #[test]
-    #[ignore]
-    fn day16_part1_test() {
-        let aunts = parse_input(true).unwrap();
-        let result = part1(&aunts).unwrap();
-        assert_eq!(result, "")
-    }
-
-    #[test]
-    #[ignore]
-    fn day16_part2_test() {
-        let _input = parse_input(true).unwrap();
-        let result = part2().unwrap();
-        assert_eq!(result, "")
-    }
 }

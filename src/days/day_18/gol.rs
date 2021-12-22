@@ -1,6 +1,5 @@
 use std::collections::{HashMap, HashSet};
 use std::fmt::{Display, Formatter, Write};
-use std::ops::Deref;
 
 pub struct Gol {
     lights: HashSet<Position>,
@@ -93,13 +92,13 @@ impl Gol {
 
         let mut new_lights: HashSet::<Position> = count.iter()
             .filter(|(pos, _)| pos.inside_square(self.grid_size))
-            .filter((|(pos, nb)| {
+            .filter(|(pos, nb)| {
                 match nb {
                     3 => true,
                     2 => self.lights.contains(pos),
                     _ => false
                 }
-            }))
+            })
             .map(|(pos, _)| *pos)
             .collect();
 

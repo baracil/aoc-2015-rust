@@ -1,6 +1,7 @@
+use std::cmp::Ordering;
 use std::collections::{HashMap, VecDeque};
+
 use crate::{parse_input, Part};
-use crate::days::day_17::filler::Filling;
 use crate::problem::{AOCResult, Problem};
 
 #[allow(dead_code)]
@@ -28,8 +29,8 @@ fn compute_number_of_combinations(containers: &[u32], amount_of_eggnog: usize) -
 fn compute_number_of_minimum_combinations(containers: &[u32], amount_of_eggnog: usize) -> usize {
     compute_combinations(containers, amount_of_eggnog)
         .iter()
-        .min_by(|(key1, value1), (key2, value2)| key1.cmp(key2))
-        .map(|(key, value)| *value)
+        .min_by(|(key1, _), (key2, _)| key1.cmp(key2))
+        .map(|(_, value)| *value)
         .unwrap_or(0)
 }
 
@@ -47,21 +48,21 @@ fn compute_combinations(containers: &[u32], amount_of_eggnog: usize) -> HashMap:
         let container_volume = containers[container_idx] as usize;
         let new_volume = volume + container_volume;
 
-        if new_volume == amount_of_eggnog {
-            let value = combinations.entry(nb_container_used).or_insert(0);
-            *value += 1;
-        } else if new_volume < amount_of_eggnog {
-            available[container_idx] = false;
+        match new_volume.cmp(&amount_of_eggnog) {
+            Ordering::Equal => {
+                *combinations.entry(nb_container_used).or_insert(0)+=1;
+            }
+            Ordering::Less => {
+                available[container_idx] = false;
 
-            containers
-                .iter()
-                .enumerate()
-                .filter(|(idx, _)| container_idx < *idx && available[*idx])
-                .for_each(|(idx, cont)| {
-                    fillings.push_back((new_volume, idx, nb_container_used + 1))
-                });
+                (0..containers.len())
+                    .filter(|idx| container_idx < *idx && available[*idx])
+                    .for_each(|idx| fillings.push_back((new_volume, idx, nb_container_used + 1)));
 
-            available[container_idx] = true;
+                available[container_idx] = true;
+
+            }
+            Ordering::Greater => {}
         }
     }
 
@@ -77,7 +78,7 @@ fn parse_input(for_test: bool) -> AOCResult<Vec<u32>> {
 #[cfg(test)]
 #[allow(dead_code)]
 mod tests {
-    use crate::days::day_17::main::{compute_number_of_combinations, compute_number_of_minimum_combinations, parse_input, part1, part2};
+    use crate::days::day_17::main::{compute_number_of_combinations, compute_number_of_minimum_combinations};
 
     #[test]
     fn day17_part1_test() {

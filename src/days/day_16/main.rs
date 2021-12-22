@@ -53,6 +53,5 @@ fn parse_input(for_test: bool) -> AOCResult<Vec<Aunt>> {
 #[cfg(test)]
 #[allow(dead_code)]
 mod tests {
-    use crate::days::day_16::main::{parse_input, part1, part2};
 
 }

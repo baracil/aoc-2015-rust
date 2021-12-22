@@ -1,5 +1,4 @@
-use std::collections::HashSet;
-use crate::days::day_18::gol::{Gol, Position};
+use crate::days::day_18::gol::Gol;
 use crate::Part;
 use crate::problem::{AOCResult, Problem};
 
@@ -33,7 +32,7 @@ fn parse_input(for_test: bool) -> AOCResult<Vec<String>> {
 #[allow(dead_code)]
 mod tests {
     use crate::days::day_18::gol::Gol;
-    use crate::days::day_18::main::{parse_input, part1, part2};
+    use crate::days::day_18::main::parse_input;
 
     #[test]
     fn day18_part1_test() {
